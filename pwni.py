@@ -19,7 +19,7 @@ def ascii_only(data):
     return data
 
 def write_stdout(data):
-    
+
     if ASCII_ONLY:
         data = ascii_only(data)
     
@@ -181,20 +181,22 @@ def set_arguments():
     args = sys.argv[1:]
 
     if '-h' in args or '--help' in args:
-        print(f"Usage: {sys.argv[0]} [-h] [-l] [-n] [-p <process>] [-v] [-o <file>]")
+        print(f"Usage: {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]")
         print("About:")
         print("  Tool for parsing specific escape sequences and providing them as input in place to a process")
         print("  Useful for purposes where raw bytes need to be sent to a process as input i.e. binary exploitation\n")
 
         print("Options:")
-        print("  -h: Show this help message and exit")
-        print("  -l: Use little endian byte order when parsing hex values initialized with \\0x")
-        print("  -n: Strip newline from input")
-        print("  -p <process>: Run the specified process and parse input before sending it to the process")
-        print("     to pass additional arguments to the process itself, use quotes around the command: -p \'ls -al\'")
-        print("  -v: Be verbose, prints all exceptions and errors")
-        print("  -o <file>: Write output to file instead of stdout")
-        print("  -a: Only output standard keyboard characters (ascii 32-127). Anything else will be written as [0x??]")
+        print("  -h           : Show this help message and exit")
+        print("  -o <file>    : Write output to file instead of stdout")
+        print("  -v           : Be verbose, prints all exceptions and errors")
+        print("  -a           : Only output standard keyboard characters (ascii 32-127)")
+        print("                 Anything else will be written as [0x??]")
+        print("  -l           : Use little endian byte order when parsing hex values initialized with \\0x")
+        print("  -n           : Strip newline from input")
+        print("  -p <process> : Run the specified process and parse input before sending it to the process")
+        print("                 To pass additional arguments to the process itself, use quotes around the command: -p \'ls -al\'")
+        print("                 Alternatively, use: -p bash or: -p sh and run commands from the shell")
         exit(0)
 
     if '-l' in args:
