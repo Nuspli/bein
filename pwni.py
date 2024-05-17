@@ -182,8 +182,8 @@ def set_arguments():
 
     if '-h' in args or '--help' in args:
         print("Usage:")
-        print(f"  {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]\n")
-        
+        print(f"  python {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]\n")
+
         print("About:")
         print("  Tool for parsing specific escape sequences and providing them as input in place to a process")
         print("  Useful for purposes where raw bytes need to be sent to a process as input i.e. binary exploitation\n")
