@@ -6,7 +6,7 @@ Useful for purposes where raw bytes need to be sent to a process as input i.e. b
 
 ## Usage
 ```
-python pwni.py [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]
+python bein.py [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]
 ```
 
 ## Options
