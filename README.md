@@ -19,7 +19,8 @@ python pwni.py [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]
   -l           : Use little endian byte order when parsing hex values initialized with \0x
   -n           : Strip newline from input
   -p <process> : Run the specified process and parse input before sending it to the process
-                 To pass additional arguments to the process itself, use quotes around the command: -p 'ls -al'
+                 To pass additional arguments to the process itself,
+                 use quotes around the command: -p 'ls -al'
                  Alternatively, use: -p bash or: -p sh and run commands from the shell
 ```
 
