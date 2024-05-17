@@ -32,3 +32,5 @@ pwntools
 This tool heavily depends on pwntools ability to handle I/O of processes and prompt toolkit
 for a nicer command line experience, allowing you to use the arrow keys like in bash and
 auto completions based on your input history.
+
+> I will keep updating this project as I see fit. Suggestions are welcome.
