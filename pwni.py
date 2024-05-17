@@ -181,7 +181,9 @@ def set_arguments():
     args = sys.argv[1:]
 
     if '-h' in args or '--help' in args:
-        print(f"Usage: {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]")
+        print("Usage:")
+        print(f"  {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]\n")
+        
         print("About:")
         print("  Tool for parsing specific escape sequences and providing them as input in place to a process")
         print("  Useful for purposes where raw bytes need to be sent to a process as input i.e. binary exploitation\n")
@@ -195,7 +197,8 @@ def set_arguments():
         print("  -l           : Use little endian byte order when parsing hex values initialized with \\0x")
         print("  -n           : Strip newline from input")
         print("  -p <process> : Run the specified process and parse input before sending it to the process")
-        print("                 To pass additional arguments to the process itself, use quotes around the command: -p \'ls -al\'")
+        print("                 To pass additional arguments to the process itself")
+        print("                 use quotes around the command: -p \'ls -al\'")
         print("                 Alternatively, use: -p bash or: -p sh and run commands from the shell")
         exit(0)
 
