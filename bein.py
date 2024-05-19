@@ -80,6 +80,9 @@ def parse(input):
                             out.extend(hex_bytes)
                             i += 2+a
 
+                            if input[i+1] == ord('\\'):
+                                i += 1
+
                         except ValueError:
                             out.append(input[i])
                             if VERBOSE:
