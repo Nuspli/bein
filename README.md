@@ -6,7 +6,7 @@ Useful for purposes where raw bytes need to be sent to a process as input i.e. b
 
 ## Usage
 ```
-python bein.py [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]
+python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]
 ```
 
 ## Options
@@ -16,6 +16,7 @@ python bein.py [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]
   -v           : Be verbose, prints all exceptions and errors
   -a           : Only output standard keyboard characters (ascii 32-127)
                  Anything else will be written as [0x??]
+  -an          : Like -a except allow newline characters too
   -l           : Use little endian byte order when parsing hex values initialized with \0x
   -n           : Strip newline from input
   -p <process> : Run the specified process and parse input before sending it to the process
