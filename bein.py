@@ -98,6 +98,27 @@ def parse(input):
 
     return bytes(out)
 
+def parse_process_args(args):
+    
+    i = 0
+    while i < len(args):
+        if args[i].startswith('\"'):
+            for j in range(i+1, len(args)):
+                if args[j].endswith('\"'):
+                    args[i] = ' '.join(args[i:j+1]).replace('\"', '')
+                    args = args[:i+1] + args[j+1:]
+                    break
+                
+        if args[i].startswith('\''):
+            for j in range(i+1, len(args)):
+                if args[j].endswith('\''):
+                    args[i] = ' '.join(args[i:j+1]).replace('\'', '')
+                    args = args[:i+1] + args[j+1:]
+                    break
+        i += 1
+
+    return args
+
 def tty_mode():
 
     from prompt_toolkit import PromptSession
@@ -110,22 +131,7 @@ def tty_mode():
         from pwn import process
         import threading
 
-        args = PROCESS.split()
-        i = 0
-        while i < len(args):
-            if args[i].startswith('\"'):
-                for j in range(i+1, len(args)):
-                    if args[j].endswith('\"'):
-                        args[i] = ' '.join(args[i:j+1]).replace('\"', '')
-                        args = args[:i+1] + args[j+1:]
-                        break
-            if args[i].startswith('\''):
-                for j in range(i+1, len(args)):
-                    if args[j].endswith('\''):
-                        args[i] = ' '.join(args[i:j+1]).replace('\'', '')
-                        args = args[:i+1] + args[j+1:]
-                        break
-            i += 1
+        args = parse_process_args(PROCESS.split())
 
         p = process(args, level='debug' if VERBOSE else 'error')
 
@@ -160,7 +166,6 @@ def tty_mode():
             if PROCESS:
                 if not p.connected():
                     break
-
                 p.send(parsed)
 
             else:
