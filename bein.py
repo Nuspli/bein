@@ -9,12 +9,13 @@ PROCESS = None
 VERBOSE = False
 OUTFILE = None
 ASCII_ONLY = False
+ASCII_ONLY_NEWLINE = False
 
 output = None
 
 def ascii_only(data):
     for b in data:
-        if not (b >= 32 and b <= 127):
+        if not (b >= 32 and b <= 127 or (ASCII_ONLY_NEWLINE and (b == 10 or b == 13))):
             data = data.replace(bytes([b]), b'[' + bytes(hex(b), encoding='utf-8') + b']')
     return data
 
@@ -182,7 +183,7 @@ def set_arguments():
 
     if '-h' in args or '--help' in args:
         print("Usage:")
-        print(f"  python {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-l] [-n] [-p <process>]\n")
+        print(f"  python {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]\n")
 
         print("About:")
         print("  Tool for parsing specific escape sequences and providing them as input in place to a process")
@@ -194,6 +195,7 @@ def set_arguments():
         print("  -v           : Be verbose, prints all exceptions and errors")
         print("  -a           : Only output standard keyboard characters (ascii 32-127)")
         print("                 Anything else will be written as [0x??]")
+        print("  -an          : Like -a except allow newline characters too")
         print("  -l           : Use little endian byte order when parsing hex values initialized with \\0x")
         print("  -n           : Strip newline from input")
         print("  -p <process> : Run the specified process and parse input before sending it to the process")
@@ -202,31 +204,37 @@ def set_arguments():
         print("                 Alternatively, use: -p bash or: -p sh and run commands from the shell")
         exit(0)
 
+    global BYTEORDER
+    global PROCESS
+    global STRIP_NEWLINE
+    global VERBOSE
+    global OUTFILE
+    global output
+    global ASCII_ONLY
+    global ASCII_ONLY_NEWLINE
+
     if '-l' in args:
-        global BYTEORDER
         BYTEORDER = 'little'
 
     if '-n' in args:
-        global STRIP_NEWLINE
         STRIP_NEWLINE = True
 
     if '-p' in args:
-        global PROCESS
         PROCESS = args[args.index('-p') + 1]
 
     if '-v' in args:
-        global VERBOSE
         VERBOSE = True
 
     if '-o' in args:
-        global OUTFILE
         OUTFILE = open(args[args.index('-o') + 1], 'wb')
-        global output
         output = write_file
 
     if '-a' in args:
-        global ASCII_ONLY
         ASCII_ONLY = True
+
+    if '-an' in args:
+        ASCII_ONLY = True
+        ASCII_ONLY_NEWLINE = True
 
 if __name__ == '__main__':
 

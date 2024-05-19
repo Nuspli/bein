@@ -1,16 +1,21 @@
 # bein - better input
 
 ## About
+
 Tool for parsing specific escape sequences and providing them as input in place to a process.
-Useful for purposes where raw bytes need to be sent to a process as input i.e. binary exploitation
+Useful for purposes where raw bytes need to be sent to a process as input i.e. binary exploitation.
+The goal here is not to replace exploit scripts by any means, but to offer a quick and easy way to
+test input to a process without having to touch a code editor.
 
 ## Usage
-```
+
+```txt
 python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]
 ```
 
 ## Options
-```
+
+```txt
   -h           : Show this help message and exit
   -o <file>    : Write output to file instead of stdout
   -v           : Be verbose, prints all exceptions and errors
@@ -26,10 +31,12 @@ python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]
 ```
 
 ## Requirements
-```
+
+```txt
 prompt_toolkit
 pwntools
 ```
+
 This tool heavily depends on pwntools ability to handle I/O of processes and prompt toolkit
 for a nicer command line experience, allowing you to use the arrow keys like in bash and
 auto completions based on your input history.
