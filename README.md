@@ -47,7 +47,9 @@ pwntools
 
 \0x41       -> A
 \0x4142     -> AB
-               be careful with putting stuff after that. if you need to add more characters after \0x4142, use a \ to terminate the sequence
+               be careful with putting stuff after the hex value.
+               if you need to add more characters after \0x4142,
+               use a \ to terminate the sequence
 \0x4142abc  -> [0x04 0x14 0x2a 0xbc] likely not what you want
 \0x4142\abc -> ABabc
 
