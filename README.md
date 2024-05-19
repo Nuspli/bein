@@ -40,27 +40,27 @@ pwntools
 ## Base Features
 
 ```txt
-\x41        -> A
-\x41\x42    -> AB
-\x413       -> A3
-\xGG        -> \xGG
+\x41          -> A
+\x41\x42      -> AB
+\x413         -> A3
+\xGG          -> \xGG
 
-\0x41       -> A
-\0x4142     -> AB
-               be careful with putting stuff after the hex value.
-               if you need to add more characters after \0x4142,
-               use a \ to terminate the sequence
-\0x4142abc  -> [0x04 0x14 0x2a 0xbc] likely not what you want
-\0x4142\abc -> ABabc
+\0x41         -> A
+\0x4142       -> AB
+                 be careful with putting stuff after the hex value.
+                 if you need to add more characters after \0x4142,
+                 use a \ to terminate the sequence
+\0x4142abc    -> [0x04 0x14 0x2a 0xbc] likely not what you want
+\0x4142\abc   -> ABabc
 
-using little endian option: -l only affects \0x sequences
-\0x41\0x42  -> AB
-\0x4142     -> BA
-\0x4142\abc -> BAabc
+using little   endian option: -l only affects \0x sequences
+\0x41\0x42    -> AB
+\0x4142       -> BA
+\0x4142\abc   -> BAabc
 
-\0          -> null byte
-\n          -> newline
-\r          -> carriage return
+\0            -> null byte
+\n            -> newline
+\r            -> carriage return
 ```
 
 This tool heavily depends on pwntools ability to handle I/O of processes and prompt toolkit
