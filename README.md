@@ -53,7 +53,7 @@ pwntools
 \0x4142abc    -> [0x04 0x14 0x2a 0xbc] likely not what you want
 \0x4142\abc   -> ABabc
 
-using little   endian option: -l only affects \0x sequences
+(using little endian option: -l only affects \0x sequences)
 \0x41\0x42    -> AB
 \0x4142       -> BA
 \0x4142\abc   -> BAabc
