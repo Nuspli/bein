@@ -126,9 +126,15 @@ def tty_mode():
 
     from prompt_toolkit import PromptSession
     from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+    from prompt_toolkit.history import FileHistory
+    import os
 
-    s = PromptSession()
-    t = None
+    history_path = os.path.expanduser('~/.bein_history')
+    if not os.path.exists(history_path):
+        os.close(os.open(history_path, os.O_CREAT))
+
+    session = PromptSession(history=FileHistory(history_path), auto_suggest=AutoSuggestFromHistory())
+    thread = None
 
     if PROCESS:
         from pwn import process
@@ -153,12 +159,12 @@ def tty_mode():
 
                     break
 
-        t = threading.Thread(target=print_output)
-        t.start()
+        thread = threading.Thread(target=print_output)
+        thread.start()
 
     while True:
         try:
-            line = s.prompt(auto_suggest=AutoSuggestFromHistory())
+            line = session.prompt()
 
             if not STRIP_NEWLINE:
                 line += '\n'
@@ -182,8 +188,8 @@ def tty_mode():
                 traceback.print_exc()
 
             break
-    if t:
-        t.join()
+    if thread:
+        thread.join()
 
 def set_arguments():
     
