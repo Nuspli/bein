@@ -3,15 +3,14 @@
 import sys
 import traceback
 
+OUTFILE = None
+output = None
+VERBOSE = False
+ASCII_ONLY = False
+ASCII_ONLY_NEWLINE = False
 BYTEORDER = 'big'
 STRIP_NEWLINE = False
 PROCESS = None
-VERBOSE = False
-OUTFILE = None
-ASCII_ONLY = False
-ASCII_ONLY_NEWLINE = False
-
-output = None
 
 def ascii_only(data):
     for b in data:
@@ -46,54 +45,53 @@ def parse(input):
 
         if chr(input[i]) == '\\' and i+1 < l:
 
-            match chr(input[i+1]):
-                case 'x':
-                    if i+3 < l:
-                        try:
-                            value = int(input[i+2:i+4], 16)
-                            out.append(value)
-                            i += 3
+            if chr(input[i+1]) == 'x':
+                if i+3 < l:
+                    try:
+                        value = int(input[i+2:i+4], 16)
+                        out.append(value)
+                        i += 3
 
-                        except ValueError:
-                            out.append(input[i])
-                            if VERBOSE:
-                                print("[Invalid byte value]")
-                                traceback.print_exc()
-                    else:
+                    except ValueError:
                         out.append(input[i])
-
-                case 'n':
-                    out.append(ord('\n'))
-                    i += 1
-
-                case 'r':
-                    out.append(ord('\r'))
-                    i += 1
-
-                case '0':
-                    if chr(input[i+2]) == 'x' and i+3 < l:
-                        a = 0
-                        while i+3+a < l and chr(input[i+3+a]).isalnum():
-                            a += 1
-                        try:
-                            hex_bytes = int(input[i+3:i+3+a], 16).to_bytes((a+1)//2, byteorder=BYTEORDER)
-                            out.extend(hex_bytes)
-                            i += 2+a
-
-                            if i+1 < l and input[i+1] == ord('\\'):
-                                i += 1
-
-                        except ValueError:
-                            out.append(input[i])
-                            if VERBOSE:
-                                print("[Invalid hex value]")
-                                traceback.print_exc()
-                    else:
-                        out.append(ord('\0'))
-                        i += 1
-
-                case _:
+                        if VERBOSE:
+                            print("[Invalid byte value]")
+                            traceback.print_exc()
+                else:
                     out.append(input[i])
+
+            elif chr(input[i+1]) == 'n':
+                out.append(ord('\n'))
+                i += 1
+
+            elif chr(input[i+1]) == 'r':
+                out.append(ord('\r'))
+                i += 1
+
+            elif chr(input[i+1]) == '0':
+                if chr(input[i+2]) == 'x' and i+3 < l:
+                    a = 0
+                    while i+3+a < l and chr(input[i+3+a]).isalnum():
+                        a += 1
+                    try:
+                        hex_bytes = int(input[i+3:i+3+a], 16).to_bytes((a+1)//2, byteorder=BYTEORDER)
+                        out.extend(hex_bytes)
+                        i += 2+a
+
+                        if i+1 < l and input[i+1] == ord('\\'):
+                            i += 1
+
+                    except ValueError:
+                        out.append(input[i])
+                        if VERBOSE:
+                            print("[Invalid hex value]")
+                            traceback.print_exc()
+                else:
+                    out.append(ord('\0'))
+                    i += 1
+
+            else:
+                out.append(input[i])
         else:
             out.append(input[i])
 
@@ -197,7 +195,7 @@ def set_arguments():
 
     if '-h' in args or '--help' in args:
         print("Usage:")
-        print(f"  python {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]\n")
+        print(f"  python {sys.argv[0]} [-h] [-o <file>] [-v] [-a] [-an] [-l] [-r] [-p <process>]\n")
 
         print("About:")
         print("  Tool for parsing specific escape sequences and providing them as input in place to a process")
@@ -208,40 +206,32 @@ def set_arguments():
         print("  -o <file>    : Write output to file instead of stdout")
         print("  -v           : Be verbose, prints all exceptions and errors")
         print("  -a           : Only output standard keyboard characters (ascii 32-127)")
-        print("                 Anything else will be written as [0x??]")
+        print("                   Anything else will be written as [0x??]")
         print("  -an          : Like -a except allow newline characters too")
         print("  -l           : Use little endian byte order when parsing hex values initialized with \\0x")
-        print("  -n           : Strip newline from input")
+        print("  -r           : Raw input, strips newline characters from the input")
         print("  -p <process> : Run the specified process and parse input before sending it to the process")
-        print("                 To pass additional arguments to the process itself")
-        print("                 use quotes around the command: -p \'ls -al\'")
-        print("                 Alternatively, use: -p bash or: -p sh and run commands from the shell")
+        print("                   To pass additional arguments to the process itself")
+        print("                   use quotes around the command: -p \'ls -al\'")
+        print("                   Alternatively, use: -p bash or: -p sh and run commands from the shell")
         exit(0)
 
-    global BYTEORDER
-    global PROCESS
-    global STRIP_NEWLINE
-    global VERBOSE
     global OUTFILE
     global output
+    global VERBOSE
     global ASCII_ONLY
     global ASCII_ONLY_NEWLINE
-
-    if '-l' in args:
-        BYTEORDER = 'little'
-
-    if '-n' in args:
-        STRIP_NEWLINE = True
-
-    if '-p' in args:
-        PROCESS = args[args.index('-p') + 1]
-
-    if '-v' in args:
-        VERBOSE = True
+    global BYTEORDER
+    global STRIP_NEWLINE
+    global PYTHON_MODE
+    global PROCESS
 
     if '-o' in args:
         OUTFILE = open(args[args.index('-o') + 1], 'wb')
         output = write_file
+
+    if '-v' in args:
+        VERBOSE = True
 
     if '-a' in args:
         ASCII_ONLY = True
@@ -249,6 +239,15 @@ def set_arguments():
     if '-an' in args:
         ASCII_ONLY = True
         ASCII_ONLY_NEWLINE = True
+
+    if '-l' in args:
+        BYTEORDER = 'little'
+
+    if '-r' in args:
+        STRIP_NEWLINE = True
+
+    if '-p' in args:
+        PROCESS = args[args.index('-p') + 1]
 
 if __name__ == '__main__':
 

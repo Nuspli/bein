@@ -10,7 +10,7 @@ test input to a process without having to touch a code editor.
 ## Usage
 
 ```txt
-python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]
+  python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-r] [-p <process>]
 ```
 
 ## Options
@@ -20,14 +20,14 @@ python bein.py [-h] [-o <file>] [-v] [-a] [-an] [-l] [-n] [-p <process>]
   -o <file>    : Write output to file instead of stdout
   -v           : Be verbose, prints all exceptions and errors
   -a           : Only output standard keyboard characters (ascii 32-127)
-                 Anything else will be written as [0x??]
+                   Anything else will be written as [0x??]
   -an          : Like -a except allow newline characters too
   -l           : Use little endian byte order when parsing hex values initialized with \0x
-  -n           : Strip newline from input
+  -r           : Raw input, strips newline characters from the input
   -p <process> : Run the specified process and parse input before sending it to the process
-                 To pass additional arguments to the process itself,
-                 use quotes around the command: -p 'ls -al'
-                 Alternatively, use: -p bash or: -p sh and run commands from the shell
+                   To pass additional arguments to the process itself
+                   use quotes around the command: -p 'ls -al'
+                   Alternatively, use: -p bash or: -p sh and run commands from the shell
 ```
 
 ## Requirements
